@@ -89,6 +89,10 @@ Key capabilities:
 - Quick navigation to application modules.
 - Access to productivity and planning features.
 
+---
+<img width="1897" height="916" alt="image" src="https://github.com/user-attachments/assets/d420341c-710a-43d1-be56-6ef7c3f3f92e" />
+
+
 ### 3. ✅ Task Management
 
 The task management module helps users organize and monitor their academic responsibilities.
@@ -101,6 +105,8 @@ Users can use this section to:
 - Manage pending responsibilities.
 
 This module supports better planning and helps users maintain visibility over their work.
+<img width="1900" height="897" alt="image" src="https://github.com/user-attachments/assets/ce3f80aa-24da-4d25-b671-bce45e9c6894" />
+
 
 ### 4. 📅 Calendar Management
 
