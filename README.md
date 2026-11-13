@@ -70,6 +70,12 @@ Features include:
 - Password hashing using Bcrypt.
 - Session-based authentication.
 - User-specific application access.
+  
+<img width="1255" height="751" alt="image" src="https://github.com/user-attachments/assets/144a00ca-94bc-4bf5-b83e-b9775969ad38" />
+
+---
+<img width="1802" height="911" alt="image" src="https://github.com/user-attachments/assets/ca6f10b5-9c22-4224-babf-2ce3c4349197" />
+
 
 ### 2. 📊 Smart Dashboard
 
