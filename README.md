@@ -119,11 +119,20 @@ Features include:
 - Categorizing calendar activities.
 - Viewing scheduled activities.
 
+  <img width="1896" height="902" alt="image" src="https://github.com/user-attachments/assets/344f0654-b749-41e9-8a5a-e885a0ed7505" />
+
+
 ### 5. 🧠 Focus Zone
 
 The Focus Zone provides a dedicated workspace for focused study sessions.
 
 It is designed to encourage students to concentrate on specific academic activities while maintaining a structured study routine.
+
+<img width="1890" height="901" alt="image" src="https://github.com/user-attachments/assets/1de98eba-3185-46f5-9a68-143f9fc7ab66" />
+
+---
+<img width="972" height="822" alt="image" src="https://github.com/user-attachments/assets/794e5658-6fc6-4ed9-89c4-a205f762ba0b" />
+
 
 ### 6. ⏱️ Pomodoro Timer
 
