@@ -1,0 +1,779 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="knowledge-page">
+
+    <!-- PAGE HEADER -->
+    <div class="knowledge-header">
+        <div>
+            <div class="knowledge-eyebrow">DYNAMIC 2.0 / LEARNING</div>
+            <h2>Knowledge Workspace</h2>
+            <p>Capture ideas, organise learning material and revise important concepts.</p>
+        </div>
+
+        <button class="btn btn-primary create-note-btn"
+                type="button"
+                onclick="openCreateModal()">
+            <i class="bi bi-plus-lg"></i>
+            Create Note
+        </button>
+    </div>
+
+
+    <!-- STATISTICS -->
+    <div class="knowledge-stats">
+
+        <div class="knowledge-stat">
+            <div class="stat-icon blue">
+                <i class="bi bi-journal-text"></i>
+            </div>
+            <div>
+                <span>Total Notes</span>
+                <h3>{{ stats[0] or 0 }}</h3>
+            </div>
+        </div>
+
+        <div class="knowledge-stat">
+            <div class="stat-icon orange">
+                <i class="bi bi-pin-angle"></i>
+            </div>
+            <div>
+                <span>Pinned Notes</span>
+                <h3>{{ stats[1] or 0 }}</h3>
+            </div>
+        </div>
+
+        <div class="knowledge-stat">
+            <div class="stat-icon pink">
+                <i class="bi bi-heart"></i>
+            </div>
+            <div>
+                <span>Favourites</span>
+                <h3>{{ stats[2] or 0 }}</h3>
+            </div>
+        </div>
+
+        <div class="knowledge-stat">
+            <div class="stat-icon green">
+                <i class="bi bi-arrow-repeat"></i>
+            </div>
+            <div>
+                <span>Revision Activities</span>
+                <h3>{{ stats[3] or 0 }}</h3>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- SEARCH AND SORT -->
+    <div class="knowledge-toolbar">
+
+        <form method="GET" action="{{ url_for('notes') }}"
+              class="knowledge-search">
+
+            <i class="bi bi-search"></i>
+
+            <input type="text"
+                   name="q"
+                   value="{{ search }}"
+                   placeholder="Search notes, topics or tags...">
+
+            <input type="hidden" name="category" value="{{ category }}">
+            <input type="hidden" name="view" value="{{ view }}">
+            <input type="hidden" name="sort" value="{{ sort }}">
+
+            {% if search %}
+            <a href="{{ url_for('notes', category=category, view=view, sort=sort) }}"
+               class="clear-search"
+               title="Clear search">
+                <i class="bi bi-x-circle"></i>
+            </a>
+            {% endif %}
+
+            <button type="submit" class="btn btn-primary">
+                Search
+            </button>
+
+        </form>
+
+
+        <form method="GET" action="{{ url_for('notes') }}"
+              class="knowledge-sort">
+
+            <input type="hidden" name="q" value="{{ search }}">
+            <input type="hidden" name="category" value="{{ category }}">
+            <input type="hidden" name="view" value="{{ view }}">
+
+            <label for="sortNotes">Sort:</label>
+
+            <select name="sort"
+                    id="sortNotes"
+                    onchange="this.form.submit()">
+
+                <option value="newest"
+                    {% if sort == 'newest' %}selected{% endif %}>
+                    Recently Updated
+                </option>
+
+                <option value="oldest"
+                    {% if sort == 'oldest' %}selected{% endif %}>
+                    Oldest First
+                </option>
+
+                <option value="alphabetical"
+                    {% if sort == 'alphabetical' %}selected{% endif %}>
+                    Alphabetical
+                </option>
+
+            </select>
+
+        </form>
+
+    </div>
+
+
+    <!-- VIEW FILTERS -->
+    <div class="knowledge-tabs">
+
+        {% for v in ['All', 'Pinned', 'Favourites', 'Recent', 'Archived'] %}
+
+        <a href="{{ url_for('notes',
+                            q=search,
+                            category=category,
+                            view=v,
+                            sort=sort) }}"
+           class="knowledge-tab {% if view == v %}active{% endif %}">
+
+            {% if v == 'All' %}
+                <i class="bi bi-grid"></i>
+            {% elif v == 'Pinned' %}
+                <i class="bi bi-pin-angle"></i>
+            {% elif v == 'Favourites' %}
+                <i class="bi bi-heart"></i>
+            {% elif v == 'Recent' %}
+                <i class="bi bi-clock-history"></i>
+            {% else %}
+                <i class="bi bi-archive"></i>
+            {% endif %}
+
+            {{ v }}
+
+        </a>
+
+        {% endfor %}
+
+    </div>
+
+
+    <!-- CATEGORY FILTER -->
+    <div class="knowledge-categories">
+
+        <a href="{{ url_for('notes', q=search, view=view, sort=sort) }}"
+           class="category-chip {% if category == 'All' %}active{% endif %}">
+            All Categories
+        </a>
+
+        {% for c in categories %}
+
+        <a href="{{ url_for('notes',
+                            q=search,
+                            category=c,
+                            view=view,
+                            sort=sort) }}"
+           class="category-chip {% if category == c %}active{% endif %}">
+
+            {{ c }}
+
+        </a>
+
+        {% endfor %}
+
+    </div>
+
+
+    <!-- NOTES SECTION HEADER -->
+    <div class="notes-section-heading">
+
+        <div>
+            <h4>
+                {% if view == 'Archived' %}
+                    Archived Notes
+                {% elif view == 'Pinned' %}
+                    Pinned Notes
+                {% elif view == 'Favourites' %}
+                    Favourite Notes
+                {% elif view == 'Recent' %}
+                    Recently Updated
+                {% else %}
+                    Your Notes
+                {% endif %}
+            </h4>
+
+            <p>
+                {{ notes|length }} note(s) found
+            </p>
+        </div>
+
+    </div>
+
+
+    <!-- NOTES GRID -->
+    {% if notes %}
+
+    <div class="knowledge-grid">
+
+        {% for n in notes %}
+
+        <article class="knowledge-card">
+
+            <div class="note-card-top">
+
+                <span class="note-category">
+                    {{ n[3] }}
+                </span>
+
+                <div class="note-indicators">
+
+                    {% if n[7] %}
+                    <i class="bi bi-pin-angle-fill pinned-icon"
+                       title="Pinned"></i>
+                    {% endif %}
+
+                    {% if n[8] %}
+                    <i class="bi bi-heart-fill favourite-icon"
+                       title="Favourite"></i>
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <h5 class="note-title">
+                {{ n[1] }}
+            </h5>
+
+
+            <p class="note-content">
+                {{ n[2] }}
+            </p>
+
+
+            {% if n[6] %}
+
+            <div class="note-tags">
+
+                {% for tag in n[6].split(',') %}
+
+                {% if tag.strip() %}
+
+                <span>#{{ tag.strip() }}</span>
+
+                {% endif %}
+
+                {% endfor %}
+
+            </div>
+
+            {% endif %}
+
+
+            <div class="note-meta">
+
+                <span>
+                    <i class="bi bi-calendar3"></i>
+
+                    {% if n[5] %}
+                        {{ n[5].strftime('%d %b %Y') }}
+                    {% elif n[4] %}
+                        {{ n[4].strftime('%d %b %Y') }}
+                    {% else %}
+                        Date unavailable
+                    {% endif %}
+                </span>
+
+                <span>
+                    <i class="bi bi-arrow-repeat"></i>
+                    {{ n[11] or 0 }} reviews
+                </span>
+
+            </div>
+
+
+            <!-- NOTE ACTIONS -->
+            <div class="note-actions">
+
+                <button type="button"
+                        class="note-action-btn revise-btn"
+                        data-url="{{ url_for('note_review', i=n[0]) }}"
+                        data-title="{{ n[1] }}"
+                        data-content="{{ n[2] }}"
+                        onclick="openReviewModal(this)">
+
+                    <i class="bi bi-book"></i>
+                    Revise
+
+                </button>
+
+
+                <button type="button"
+                        class="note-action-btn"
+                        data-url="{{ url_for('note_edit', i=n[0]) }}"
+                        data-note='{{ {
+                            "title": n[1],
+                            "content": n[2],
+                            "category": n[3],
+                            "tags": n[6] or ""
+                        }|tojson|forceescape }}'
+                        onclick="openEditModal(this)">
+
+                    <i class="bi bi-pencil"></i>
+                    Edit
+
+                </button>
+
+
+                <form method="POST"
+                      action="{{ url_for('note_action', i=n[0], action='pin') }}">
+
+                    <button type="submit"
+                            class="note-action-btn"
+                            title="Toggle pin">
+
+                        <i class="bi bi-pin-angle"></i>
+                        {% if n[7] %}Unpin{% else %}Pin{% endif %}
+
+                    </button>
+
+                </form>
+
+
+                <form method="POST"
+                      action="{{ url_for('note_action', i=n[0], action='favourite') }}">
+
+                    <button type="submit"
+                            class="note-action-btn"
+                            title="Toggle favourite">
+
+                        <i class="bi bi-heart"></i>
+                        {% if n[8] %}Unfavourite{% else %}Favourite{% endif %}
+
+                    </button>
+
+                </form>
+
+
+                <form method="POST"
+                      action="{{ url_for('note_action', i=n[0], action='archive') }}">
+
+                    <button type="submit"
+                            class="note-action-btn"
+                            title="Archive or restore">
+
+                        <i class="bi bi-archive"></i>
+                        {% if n[9] %}Restore{% else %}Archive{% endif %}
+
+                    </button>
+
+                </form>
+
+
+                <form method="POST"
+                      action="{{ url_for('note_delete', i=n[0]) }}"
+                      onsubmit="return confirm('Permanently delete this note?');">
+
+                    <button type="submit"
+                            class="note-action-btn delete-action">
+
+                        <i class="bi bi-trash3"></i>
+                        Delete
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </article>
+
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+
+    <!-- EMPTY STATE -->
+    <div class="knowledge-empty">
+
+        <div class="empty-icon">
+            <i class="bi bi-journal-plus"></i>
+        </div>
+
+        <h4>No notes found</h4>
+
+        <p>
+            {% if search %}
+                No notes match your search. Try another keyword.
+            {% elif view == 'Archived' %}
+                You have no archived notes.
+            {% elif view == 'Pinned' %}
+                Pin important notes to find them here.
+            {% elif view == 'Favourites' %}
+                Mark useful notes as favourites to find them here.
+            {% else %}
+                Start building your personal knowledge library.
+            {% endif %}
+        </p>
+
+        <button class="btn btn-primary"
+                type="button"
+                onclick="openCreateModal()">
+
+            <i class="bi bi-plus-lg"></i>
+            Create Your First Note
+
+        </button>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+
+<!-- ======================================================
+     CREATE / EDIT NOTE MODAL
+====================================================== -->
+
+<div class="modal fade"
+     id="noteModal"
+     tabindex="-1"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+
+        <div class="modal-content knowledge-modal">
+
+            <form method="POST"
+                  id="noteForm"
+                  action="{{ url_for('notes') }}">
+
+                <div class="modal-header">
+
+                    <div>
+                        <h5 class="modal-title" id="noteModalTitle">
+                            Create New Note
+                        </h5>
+
+                        <p class="modal-subtitle">
+                            Save your knowledge in one organised workspace.
+                        </p>
+                    </div>
+
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"></button>
+
+                </div>
+
+
+                <div class="modal-body">
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Note Title
+                        </label>
+
+                        <input type="text"
+                               class="form-control"
+                               name="title"
+                               id="noteTitle"
+                               maxlength="180"
+                               placeholder="Enter a meaningful title"
+                               required>
+
+                    </div>
+
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+                                Category
+                            </label>
+
+                            <select name="category"
+                                    id="noteCategory"
+                                    class="form-select">
+
+                                {% for c in categories %}
+
+                                <option value="{{ c }}">
+                                    {{ c }}
+                                </option>
+
+                                {% endfor %}
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="col-md-6 mb-3">
+
+                            <label class="form-label">
+                                Tags
+                            </label>
+
+                            <input type="text"
+                                   class="form-control"
+                                   name="tags"
+                                   id="noteTags"
+                                   maxlength="255"
+                                   placeholder="python, sql, revision">
+
+                            <small class="text-muted">
+                                Separate tags using commas.
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Note Content
+                        </label>
+
+                        <textarea name="content"
+                                  id="noteContent"
+                                  class="form-control note-editor"
+                                  rows="9"
+                                  maxlength="20000"
+                                  placeholder="Write your concepts, code explanations, important points or project ideas..."
+                                  required></textarea>
+
+                        <div class="editor-footer">
+                            <span>Plain text editor</span>
+                            <span id="contentCounter">0 / 20000</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="modal-footer">
+
+                    <button type="button"
+                            class="btn btn-light"
+                            data-bs-dismiss="modal">
+                        Cancel
+                    </button>
+
+                    <button type="submit"
+                            class="btn btn-primary"
+                            id="noteSaveButton">
+
+                        <i class="bi bi-check2-circle"></i>
+                        Save Note
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ======================================================
+     REVISION MODAL
+====================================================== -->
+
+<div class="modal fade"
+     id="reviewModal"
+     tabindex="-1"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+
+        <div class="modal-content knowledge-modal">
+
+            <div class="modal-header">
+
+                <div>
+                    <h5 class="modal-title">
+                        Revision Mode
+                    </h5>
+
+                    <p class="modal-subtitle">
+                        Review your saved knowledge.
+                    </p>
+                </div>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"></button>
+
+            </div>
+
+
+            <div class="modal-body">
+
+                <h5 id="reviewTitle" class="review-title"></h5>
+
+                <div class="review-content"
+                     id="reviewContent"></div>
+
+                <p class="review-hint">
+                    Read the note carefully and revise the important concepts.
+                </p>
+
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button type="button"
+                        class="btn btn-light"
+                        data-bs-dismiss="modal">
+                    Close
+                </button>
+
+                <form method="POST" id="reviewForm">
+
+                    <button type="submit" class="btn btn-primary">
+
+                        <i class="bi bi-check-circle"></i>
+                        Mark as Reviewed
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ======================================================
+     JAVASCRIPT
+====================================================== -->
+
+<script>
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    const noteModalElement = document.getElementById('noteModal');
+    const reviewModalElement = document.getElementById('reviewModal');
+
+    const noteModal = new bootstrap.Modal(noteModalElement);
+    const reviewModal = new bootstrap.Modal(reviewModalElement);
+
+    const noteForm = document.getElementById('noteForm');
+    const noteTitle = document.getElementById('noteTitle');
+    const noteContent = document.getElementById('noteContent');
+    const noteCategory = document.getElementById('noteCategory');
+    const noteTags = document.getElementById('noteTags');
+
+    const contentCounter = document.getElementById('contentCounter');
+
+
+    // CREATE NOTE
+    window.openCreateModal = function () {
+
+        noteForm.reset();
+
+        noteForm.action = "{{ url_for('notes') }}";
+
+        document.getElementById('noteModalTitle').textContent =
+            'Create New Note';
+
+        document.getElementById('noteSaveButton').innerHTML =
+            '<i class="bi bi-check2-circle"></i> Save Note';
+
+        updateContentCounter();
+
+        noteModal.show();
+    };
+
+
+    // EDIT NOTE
+    window.openEditModal = function (button) {
+
+        let note;
+
+        try {
+            note = JSON.parse(button.dataset.note);
+        } catch (error) {
+            alert('Unable to load this note for editing.');
+            return;
+        }
+
+        noteForm.reset();
+
+        noteForm.action = button.dataset.url;
+
+        noteTitle.value = note.title || '';
+        noteContent.value = note.content || '';
+        noteCategory.value = note.category || 'General';
+        noteTags.value = note.tags || '';
+
+        document.getElementById('noteModalTitle').textContent =
+            'Edit Note';
+
+        document.getElementById('noteSaveButton').innerHTML =
+            '<i class="bi bi-save"></i> Update Note';
+
+        updateContentCounter();
+
+        noteModal.show();
+    };
+
+
+    // REVISION MODE
+    window.openReviewModal = function (button) {
+
+        document.getElementById('reviewTitle').textContent =
+            button.dataset.title || '';
+
+        document.getElementById('reviewContent').textContent =
+            button.dataset.content || '';
+
+        document.getElementById('reviewForm').action =
+            button.dataset.url;
+
+        reviewModal.show();
+    };
+
+
+    // CHARACTER COUNTER
+    function updateContentCounter() {
+
+        contentCounter.textContent =
+            noteContent.value.length + ' / 20000';
+
+    }
+
+    noteContent.addEventListener('input', updateContentCounter);
+
+});
+
+</script>
+
+{% endblock %}

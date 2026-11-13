@@ -1,0 +1,1 @@
+Add genuine screenshots of the running application here (dashboard, task board, focus zone and analytics). Blur personal information before publishing.\n

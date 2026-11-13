@@ -1,0 +1,313 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="page-head task-page-head">
+    <div>
+        <span class="eyebrow">PLAN · EXECUTE · REVIEW</span>
+        <h1>Task Management</h1>
+        <p>Turn your priorities into progress. Organise, track and complete your daily goals.</p>
+    </div>
+    <div class="task-date">
+        <i class="bi bi-calendar3"></i>
+        Stay on track
+    </div>
+</div>
+
+<!-- TASK STATISTICS -->
+{% set total = tasks|length %}
+{% set completed = tasks|selectattr('4', 'equalto', 'Completed')|list|length %}
+{% set pending = total - completed %}
+{% set high = tasks|selectattr('2', 'equalto', 'High')|list|length %}
+{% set progress = ((completed / total) * 100)|round|int if total else 0 %}
+
+<div class="task-stats">
+
+    <div class="task-stat-card">
+        <div class="task-stat-icon blue">
+            <i class="bi bi-clipboard-check"></i>
+        </div>
+        <div>
+            <small>Total Tasks</small>
+            <h3>{{ total }}</h3>
+            <span>Tasks in current view</span>
+        </div>
+    </div>
+
+    <div class="task-stat-card">
+        <div class="task-stat-icon orange">
+            <i class="bi bi-hourglass-split"></i>
+        </div>
+        <div>
+            <small>Pending</small>
+            <h3>{{ pending }}</h3>
+            <span>Awaiting completion</span>
+        </div>
+    </div>
+
+    <div class="task-stat-card">
+        <div class="task-stat-icon green">
+            <i class="bi bi-check2-circle"></i>
+        </div>
+        <div>
+            <small>Completed</small>
+            <h3>{{ completed }}</h3>
+            <span>Successfully finished</span>
+        </div>
+    </div>
+
+    <div class="task-stat-card">
+        <div class="task-stat-icon red">
+            <i class="bi bi-flag"></i>
+        </div>
+        <div>
+            <small>High Priority</small>
+            <h3>{{ high }}</h3>
+            <span>Important tasks</span>
+        </div>
+    </div>
+
+</div>
+
+
+<div class="row g-4">
+
+    <!-- CREATE TASK -->
+    <div class="col-lg-4">
+
+        <div class="panel create-task-panel">
+
+            <div class="task-section-title">
+                <div class="task-title-icon">
+                    <i class="bi bi-plus-lg"></i>
+                </div>
+                <div>
+                    <h5>Create New Task</h5>
+                    <p>Add something to accomplish.</p>
+                </div>
+            </div>
+
+            <form method="post" class="task-create-form">
+
+                <div>
+                    <label for="taskTitle">Task title</label>
+                    <input
+                        type="text"
+                        id="taskTitle"
+                        class="form-control"
+                        name="title"
+                        maxlength="180"
+                        placeholder="e.g. Complete DBMS assignment"
+                        required
+                    >
+                </div>
+
+                <div>
+                    <label for="taskPriority">Priority level</label>
+                    <select id="taskPriority" class="form-select" name="priority">
+                        <option value="Medium">Medium Priority</option>
+                        <option value="High">High Priority</option>
+                        <option value="Low">Low Priority</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="taskDeadline">Deadline</label>
+                    <input
+                        type="date"
+                        id="taskDeadline"
+                        class="form-control"
+                        name="due_date"
+                    >
+                    <small class="task-hint">
+                        <i class="bi bi-info-circle"></i>
+                        Select a deadline to plan ahead.
+                    </small>
+                </div>
+
+                <button type="submit" class="task-add-btn">
+                    <i class="bi bi-plus-circle"></i>
+                    Add to my tasks
+                </button>
+
+            </form>
+
+            <div class="task-create-tip">
+                <i class="bi bi-lightbulb"></i>
+                <div>
+                    <strong>Small steps, big progress</strong>
+                    <p>Break your learning goals into manageable tasks.</p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- TASK BOARD -->
+    <div class="col-lg-8">
+
+        <div class="panel task-board-panel">
+
+            <div class="task-board-header">
+                <div>
+                    <h5>My Task Board</h5>
+                    <p>Keep track of everything you need to accomplish.</p>
+                </div>
+
+                <span class="task-result-count">
+                    {{ total }} task(s)
+                </span>
+            </div>
+
+
+            <!-- PROGRESS -->
+            <div class="task-progress-box">
+
+                <div class="task-progress-heading">
+                    <div>
+                        <strong>Completion Progress</strong>
+                        <small>{{ completed }} of {{ total }} tasks completed</small>
+                    </div>
+                    <span>{{ progress }}%</span>
+                </div>
+
+                <div class="progress task-progress">
+                    <div
+                        class="progress-bar"
+                        role="progressbar"
+                        style="width: {{ progress }}%"
+                        aria-valuenow="{{ progress }}"
+                        aria-valuemin="0"
+                        aria-valuemax="100">
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- SEARCH AND FILTER -->
+            <form method="get" class="task-filter-form">
+
+                <div class="task-search">
+                    <i class="bi bi-search"></i>
+                    <input
+                        type="text"
+                        name="q"
+                        value="{{ search }}"
+                        placeholder="Search your tasks..."
+                        class="form-control"
+                    >
+                </div>
+
+                <select name="status" class="form-select">
+                    <option value="All" {% if status == 'All' %}selected{% endif %}>All Status</option>
+                    <option value="Pending" {% if status == 'Pending' %}selected{% endif %}>Pending</option>
+                    <option value="Completed" {% if status == 'Completed' %}selected{% endif %}>Completed</option>
+                </select>
+
+                <select name="priority" class="form-select">
+                    <option value="All" {% if priority|default('All') == 'All' %}selected{% endif %}>All Priorities</option>
+                    <option value="High" {% if priority|default('All') == 'High' %}selected{% endif %}>High</option>
+                    <option value="Medium" {% if priority|default('All') == 'Medium' %}selected{% endif %}>Medium</option>
+                    <option value="Low" {% if priority|default('All') == 'Low' %}selected{% endif %}>Low</option>
+                </select>
+
+                <button type="submit" class="task-filter-btn">
+                    <i class="bi bi-funnel"></i>
+                    Filter
+                </button>
+
+                <a href="{{ url_for('tasks') }}" class="task-reset-btn" title="Clear filters">
+                    <i class="bi bi-arrow-counterclockwise"></i>
+                </a>
+
+            </form>
+
+
+            <!-- TASK LIST -->
+            <div class="task-list">
+
+                {% for t in tasks %}
+
+                <div class="task-item {% if t[4] == 'Completed' %}task-is-completed{% endif %}">
+
+                    <form method="post" action="{{ url_for('task_toggle', i=t[0]) }}">
+                        <button
+                            type="submit"
+                            class="task-check {% if t[4] == 'Completed' %}is-checked{% endif %}"
+                            title="Toggle completion"
+                            aria-label="Toggle task completion">
+                            <i class="bi bi-check-lg"></i>
+                        </button>
+                    </form>
+
+                    <div class="task-item-content">
+
+                        <div class="task-item-title">
+                            <strong>{{ t[1] }}</strong>
+
+                            <span class="task-priority priority-{{ t[2]|lower }}">
+                                {{ t[2] }}
+                            </span>
+                        </div>
+
+                        <div class="task-item-meta">
+
+                            {% if t[3] %}
+                                <span>
+                                    <i class="bi bi-calendar-event"></i>
+                                    {{ t[3] }}
+                                </span>
+                            {% else %}
+                                <span>
+                                    <i class="bi bi-calendar-minus"></i>
+                                    No deadline
+                                </span>
+                            {% endif %}
+
+                            <span class="task-status-text">
+                                <i class="bi {% if t[4] == 'Completed' %}bi-check-circle-fill{% else %}bi-clock{% endif %}"></i>
+                                {{ t[4] }}
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <form
+                        method="post"
+                        action="{{ url_for('task_delete', i=t[0]) }}"
+                        onsubmit="return confirm('Are you sure you want to delete this task?')">
+
+                        <button type="submit" class="task-delete-btn" title="Delete task">
+                            <i class="bi bi-trash3"></i>
+                        </button>
+
+                    </form>
+
+                </div>
+
+                {% else %}
+
+                <div class="task-empty-state">
+                    <div class="task-empty-icon">
+                        <i class="bi bi-clipboard2-check"></i>
+                    </div>
+                    <h6>No tasks found</h6>
+                    <p>There are no matching tasks. Try changing your filters or create a new task.</p>
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

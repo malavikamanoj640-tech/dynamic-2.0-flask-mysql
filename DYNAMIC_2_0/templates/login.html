@@ -1,0 +1,225 @@
+
+{% extends 'base.html' %}
+
+{% block public %}
+
+<div class="login-page">
+
+    <!-- LEFT BRANDING SECTION -->
+    <section class="login-showcase">
+
+        <a class="login-brand" href="{{ url_for('index') }}">
+            <span class="brand-mark">D</span>
+            <span class="brand-name">
+                DYNAMIC
+                <small>2.0</small>
+            </span>
+        </a>
+
+        <div class="showcase-content">
+
+            <span class="showcase-label">
+                <i class="bi bi-stars"></i>
+                YOUR PERSONAL LEARNING SPACE
+            </span>
+
+            <h1>
+                Make every day
+                <span>count.</span>
+            </h1>
+
+            <p>
+                Plan smarter, stay focused, organize your learning
+                and make consistent progress with one workspace.
+            </p>
+
+            <div class="showcase-features">
+
+                <div class="showcase-feature">
+                    <span><i class="bi bi-check2"></i></span>
+                    <div>
+                        <strong>Stay Organized</strong>
+                        <small>Manage tasks, notes and daily goals.</small>
+                    </div>
+                </div>
+
+                <div class="showcase-feature">
+                    <span><i class="bi bi-check2"></i></span>
+                    <div>
+                        <strong>Build Better Habits</strong>
+                        <small>Track focus sessions and productivity.</small>
+                    </div>
+                </div>
+
+                <div class="showcase-feature">
+                    <span><i class="bi bi-check2"></i></span>
+                    <div>
+                        <strong>Keep Learning</strong>
+                        <small>Explore coding, quizzes and learning tools.</small>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="showcase-footer">
+            <span>LEARN. ORGANIZE. GROW.</span>
+            <span>© 2026 DYNAMIC 2.0</span>
+        </div>
+
+        <div class="showcase-decoration decoration-one"></div>
+        <div class="showcase-decoration decoration-two"></div>
+
+    </section>
+
+
+    <!-- RIGHT LOGIN SECTION -->
+    <section class="login-form-section">
+
+        <div class="login-card">
+
+            <div class="mobile-brand">
+                <a class="login-brand" href="{{ url_for('index') }}">
+                    <span class="brand-mark">D</span>
+                    <span class="brand-name">
+                        DYNAMIC
+                        <small>2.0</small>
+                    </span>
+                </a>
+            </div>
+
+            <div class="login-heading">
+                <span class="login-eyebrow">WELCOME BACK</span>
+                <h2>Sign in to your account</h2>
+                <p>Enter your details to access your workspace.</p>
+            </div>
+
+
+            <!-- FLASH MESSAGES -->
+            {% with msgs = get_flashed_messages(with_categories=true) %}
+                {% for cat, msg in msgs %}
+                    <div class="alert alert-{{ cat }} login-alert">
+                        <i class="bi bi-info-circle"></i>
+                        {{ msg }}
+                    </div>
+                {% endfor %}
+            {% endwith %}
+
+
+            <!-- LOGIN FORM -->
+            <form method="post" class="login-form">
+
+                <div class="login-field">
+                    <label for="email">Email address</label>
+
+                    <div class="input-wrapper">
+                        <i class="bi bi-envelope"></i>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            class="form-control"
+                            placeholder="you@example.com"
+                            autocomplete="email"
+                            required
+                            autofocus
+                        >
+                    </div>
+                </div>
+
+
+                <div class="login-field">
+                    <div class="password-label">
+                        <label for="password">Password</label>
+                    </div>
+
+                    <div class="input-wrapper">
+                        <i class="bi bi-lock"></i>
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            class="form-control"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            id="togglePassword"
+                            aria-label="Show password"
+                        >
+                            <i class="bi bi-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+
+                <button type="submit" class="login-submit">
+                    <span>Sign in to workspace</span>
+                    <i class="bi bi-arrow-right"></i>
+                </button>
+
+            </form>
+
+
+            <div class="login-separator">
+                <span></span>
+                <small>YOUR PRODUCTIVITY STARTS HERE</small>
+                <span></span>
+            </div>
+
+
+            <div class="register-prompt">
+                New to DYNAMIC 2.0?
+                <a href="{{ url_for('register') }}">Create an account</a>
+            </div>
+
+
+            <div class="login-security">
+                <i class="bi bi-shield-lock-fill"></i>
+                Your account and personal workspace are protected.
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    const toggle = document.getElementById('togglePassword');
+    const password = document.getElementById('password');
+
+    if (toggle && password) {
+
+        toggle.addEventListener('click', function () {
+
+            const isPassword = password.type === 'password';
+
+            password.type = isPassword ? 'text' : 'password';
+
+            toggle.innerHTML = isPassword
+                ? '<i class="bi bi-eye-slash"></i>'
+                : '<i class="bi bi-eye"></i>';
+
+            toggle.setAttribute(
+                'aria-label',
+                isPassword ? 'Hide password' : 'Show password'
+            );
+
+        });
+
+    }
+
+});
+</script>
+
+{% endblock %}

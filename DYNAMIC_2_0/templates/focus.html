@@ -1,0 +1,1623 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+/* =========================================
+   DYNAMIC 2.0 - FOCUS ZONE
+========================================= */
+
+.focus-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    color: #263b50;
+    padding-bottom: 20px;
+}
+
+.focus-page * {
+    box-sizing: border-box;
+}
+
+/* PAGE HEADER */
+
+.focus-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 18px;
+}
+
+.focus-eyebrow {
+    color: #1769aa;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+}
+
+.focus-heading h1 {
+    color: #102b46;
+    font-size: 25px;
+    font-weight: 800;
+    margin: 4px 0;
+}
+
+.focus-heading p {
+    color: #8492a2;
+    font-size: 12px;
+    margin: 0;
+}
+
+.focus-page .study-badge {
+    background: #eaf4fb;
+    color: #1769aa;
+    border: 1px solid #d8eaf7;
+    border-radius: 30px;
+    padding: 8px 13px;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+/* COMPACT HERO */
+
+.focus-hero {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(110deg, #102b46, #1769aa);
+    color: #fff;
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-bottom: 17px;
+    min-height: 112px;
+}
+
+.focus-hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.focus-hero-label {
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    color: #c6e5ff;
+}
+
+.focus-hero h2 {
+    font-size: 21px;
+    font-weight: 800;
+    margin: 5px 0;
+}
+
+.focus-hero p {
+    font-size: 12px;
+    color: #dceeff;
+    margin: 0;
+}
+
+.focus-hero-icon {
+    font-size: 58px;
+    color: #fff;
+    opacity: .15;
+    margin-right: 22px;
+}
+
+/* STATISTICS */
+
+.focus-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.focus-stat {
+    background: #fff;
+    border: 1px solid #e8eef4;
+    border-radius: 12px;
+    padding: 13px 15px;
+    min-width: 0;
+    transition: .2s ease;
+}
+
+.focus-stat:hover {
+    border-color: #c8dced;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(16,43,70,.05);
+}
+
+.focus-stat-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.focus-stat-label {
+    font-size: 11px;
+    color: #8492a2;
+    font-weight: 650;
+}
+
+.focus-stat-icon {
+    width: 31px;
+    height: 31px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9px;
+    background: #eaf4fb;
+    color: #1769aa;
+    font-size: 15px;
+}
+
+.focus-stat-value {
+    color: #102b46;
+    font-size: 23px;
+    font-weight: 800;
+    margin-top: 5px;
+    line-height: 1.2;
+}
+
+.focus-stat-value small {
+    font-size: 11px;
+    font-weight: 600;
+    color: #8290a0;
+}
+
+.focus-stat-note {
+    font-size: 10px;
+    color: #9aa6b3;
+    margin-top: 4px;
+}
+
+/* GENERAL CARDS */
+
+.focus-card {
+    background: #fff;
+    border: 1px solid #e8eef4;
+    border-radius: 13px;
+    padding: 17px;
+    min-width: 0;
+    box-shadow: 0 3px 12px rgba(16,43,70,.025);
+}
+
+.focus-card + .focus-card {
+    margin-top: 13px;
+}
+
+.focus-section-title {
+    font-size: 14px;
+    font-weight: 800;
+    color: #17344f;
+    margin: 0;
+}
+
+.focus-subtitle {
+    color: #91a0ae;
+    font-size: 10px;
+    margin-top: 3px;
+}
+
+.focus-section-icon {
+    width: 31px;
+    height: 31px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9px;
+    color: #1769aa;
+    background: #eaf4fb;
+    font-size: 15px;
+}
+
+/* TIMER */
+
+.timer-card {
+    text-align: center;
+}
+
+.timer-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: left;
+}
+
+.timer-status {
+    background: #f1f5f9;
+    color: #64748b;
+    border-radius: 20px;
+    padding: 5px 10px;
+    font-size: 10px;
+    font-weight: 750;
+}
+
+.timer-status.running {
+    background: #e6f7ee;
+    color: #15803d;
+}
+
+.timer-status.completed {
+    background: #eaf4fb;
+    color: #1769aa;
+}
+
+.timer-status.paused {
+    background: #fff7e6;
+    color: #a16207;
+}
+
+.timer-modes {
+    display: flex;
+    justify-content: center;
+    gap: 7px;
+    margin: 15px 0 12px;
+}
+
+.mode-btn {
+    border: 1px solid #e3eaf1;
+    background: #fff;
+    color: #718096;
+    padding: 7px 17px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 700;
+    transition: .2s;
+}
+
+.mode-btn.active {
+    background: #eaf4fb;
+    color: #1769aa;
+    border-color: #b9d9ef;
+}
+
+.mode-btn:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+/* TIMER CIRCLE */
+
+.timer-circle {
+    width: 190px;
+    height: 190px;
+    margin: 13px auto;
+    border-radius: 50%;
+    background: conic-gradient(#1769aa 0deg, #edf2f7 0deg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 18px rgba(23,105,170,.08);
+}
+
+.timer-inner {
+    width: 164px;
+    height: 164px;
+    background: #fff;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.timer-mode-label {
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    color: #8a99a8;
+}
+
+.timer-time {
+    color: #102b46;
+    font-size: 39px;
+    line-height: 1.3;
+    font-weight: 800;
+    letter-spacing: -1px;
+    font-variant-numeric: tabular-nums;
+}
+
+.timer-caption {
+    color: #91a0ae;
+    font-size: 10px;
+}
+
+/* PRESETS */
+
+.timer-presets {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin: 12px 0 16px;
+}
+
+.preset-btn {
+    border: 1px solid #e1e9f0;
+    background: #fff;
+    color: #587087;
+    padding: 6px 11px;
+    border-radius: 7px;
+    font-size: 10px;
+    font-weight: 700;
+    transition: .2s;
+}
+
+.preset-btn:hover,
+.preset-btn.active {
+    color: #1769aa;
+    border-color: #9cc8e6;
+    background: #eaf4fb;
+}
+
+/* INPUTS */
+
+.focus-input {
+    width: 100%;
+    border: 1px solid #dfe7ef;
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 12px;
+    color: #344b61;
+    background: #fff;
+    outline: none;
+}
+
+.focus-input:focus {
+    border-color: #1769aa;
+    box-shadow: 0 0 0 3px rgba(23,105,170,.09);
+}
+
+.focus-label {
+    display: block;
+    color: #52677d;
+    font-size: 10px;
+    font-weight: 750;
+    margin-bottom: 5px;
+}
+
+.custom-timer-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+    align-items: end;
+    max-width: 330px;
+    margin: 0 auto 13px;
+}
+
+.subject-box {
+    max-width: 380px;
+    margin: 0 auto 14px;
+    text-align: left;
+}
+
+/* BUTTONS */
+
+.timer-controls {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+
+.timer-controls .btn {
+    min-width: 90px;
+    border-radius: 8px;
+    padding: 8px 13px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.focus-page .btn-primary {
+    background: #1769aa;
+    border-color: #1769aa;
+}
+
+.focus-page .btn-primary:hover {
+    background: #10588f;
+    border-color: #10588f;
+}
+
+.focus-page .btn-outline-primary {
+    color: #1769aa;
+    border-color: #b8d5e9;
+}
+
+.focus-page .btn-outline-primary:hover {
+    background: #eaf4fb;
+    color: #1769aa;
+}
+
+.timer-message {
+    font-size: 10px;
+    color: #8492a2;
+    margin: 12px 0 0;
+    min-height: 15px;
+}
+
+/* DAILY GOAL */
+
+.goal-card {
+    background: linear-gradient(145deg, #fff, #f9fcff);
+}
+
+.goal-number {
+    color: #1769aa;
+    font-size: 23px;
+    font-weight: 800;
+}
+
+.goal-progress {
+    height: 8px;
+    border-radius: 20px;
+    background: #eaf0f5;
+    overflow: hidden;
+}
+
+.goal-progress-fill {
+    height: 100%;
+    width: 0;
+    border-radius: 20px;
+    background: linear-gradient(90deg, #1769aa, #39a0db);
+    transition: width .4s ease;
+}
+
+.goal-meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 10px;
+    margin: 12px 0 7px;
+    color: #718096;
+}
+
+/* QUICK TIPS */
+
+.tip-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f3f6;
+}
+
+.tip-item:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+}
+
+.tip-icon {
+    width: 29px;
+    height: 29px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eaf4fb;
+    color: #1769aa;
+    border-radius: 8px;
+    font-size: 13px;
+}
+
+.tip-item strong {
+    display: block;
+    color: #344b61;
+    font-size: 11px;
+}
+
+.tip-item p {
+    color: #91a0ae;
+    font-size: 10px;
+    margin: 2px 0 0;
+    line-height: 1.5;
+}
+
+/* WEEKLY CHART */
+
+.week-bars {
+    height: 135px;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    gap: 10px;
+    padding: 10px 5px 0;
+    border-bottom: 1px solid #e8eef4;
+}
+
+.week-day {
+    flex: 1;
+    height: 100%;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 7px;
+}
+
+.week-bar-track {
+    width: 100%;
+    max-width: 32px;
+    height: 100px;
+    display: flex;
+    align-items: flex-end;
+    background: #f1f5f9;
+    border-radius: 6px 6px 3px 3px;
+    overflow: hidden;
+}
+
+.week-bar {
+    width: 100%;
+    min-height: 0;
+    background: linear-gradient(180deg, #4da6dd, #1769aa);
+    border-radius: 6px 6px 3px 3px;
+    transition: height .3s;
+}
+
+.week-day-label {
+    font-size: 9px;
+    color: #8492a2;
+}
+
+/* SUBJECT BREAKDOWN */
+
+.subject-row {
+    margin-top: 13px;
+}
+
+.subject-meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 5px;
+    font-size: 10px;
+}
+
+.subject-name {
+    color: #344b61;
+    font-weight: 700;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.subject-minutes {
+    color: #8492a2;
+    white-space: nowrap;
+}
+
+.subject-track {
+    height: 6px;
+    background: #edf2f7;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.subject-fill {
+    height: 100%;
+    background: #1769aa;
+    border-radius: 10px;
+}
+
+/* EMPTY STATE / FOOTER */
+
+.focus-empty {
+    text-align: center;
+    padding: 20px 8px;
+    color: #94a3b2;
+    font-size: 11px;
+}
+
+.focus-empty i {
+    display: block;
+    font-size: 25px;
+    margin-bottom: 7px;
+}
+
+.focus-footer {
+    color: #94a3b2;
+    font-size: 10px;
+    margin-top: 14px;
+    text-align: center;
+}
+
+/* RESPONSIVE */
+
+@media(max-width: 991px) {
+    .focus-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media(max-width: 575px) {
+    .focus-heading h1 {
+        font-size: 22px;
+    }
+
+    .focus-heading {
+        align-items: flex-start;
+    }
+
+    .focus-hero {
+        padding: 17px;
+        min-height: 105px;
+    }
+
+    .focus-hero h2 {
+        font-size: 18px;
+    }
+
+    .focus-hero p {
+        max-width: 240px;
+        font-size: 10px;
+        line-height: 1.5;
+    }
+
+    .focus-hero-icon {
+        font-size: 42px;
+        margin-right: 0;
+    }
+
+    .focus-stat {
+        padding: 11px;
+    }
+
+    .focus-stat-value {
+        font-size: 20px;
+    }
+
+    .focus-card {
+        padding: 14px;
+    }
+
+    .timer-circle {
+        width: 175px;
+        height: 175px;
+    }
+
+    .timer-inner {
+        width: 151px;
+        height: 151px;
+    }
+
+    .timer-time {
+        font-size: 35px;
+    }
+
+    .timer-controls .btn {
+        min-width: 82px;
+    }
+
+    .custom-timer-row {
+        max-width: 100%;
+    }
+}
+</style>
+
+
+<div class="focus-page">
+
+    <!-- HEADER -->
+
+    <div class="focus-heading">
+        <div>
+            <span class="focus-eyebrow">PRODUCTIVITY / DEEP WORK</span>
+            <h1>Focus Zone</h1>
+            <p>Plan your study sessions, build consistency and track your progress.</p>
+        </div>
+
+        <span class="study-badge">
+            <i class="bi bi-lightning-charge-fill me-1"></i>
+            Study Mode
+        </span>
+    </div>
+
+
+    <!-- HERO -->
+
+    <div class="focus-hero">
+        <div class="focus-hero-content">
+            <div class="focus-hero-label">YOUR PERSONAL PRODUCTIVITY SPACE</div>
+            <h2>Make time for what matters.</h2>
+            <p>Set a daily target, focus on one task and make steady progress.</p>
+        </div>
+
+        <i class="bi bi-hourglass-split focus-hero-icon"></i>
+    </div>
+
+
+    <!-- STATISTICS -->
+
+    <div class="focus-stats">
+
+        <div class="focus-stat">
+            <div class="focus-stat-top">
+                <span class="focus-stat-label">Today's Focus</span>
+                <span class="focus-stat-icon"><i class="bi bi-clock"></i></span>
+            </div>
+            <div class="focus-stat-value">
+                <span id="todayMinutes">{{ today_minutes }}</span>
+                <small>min</small>
+            </div>
+            <div class="focus-stat-note">Completed today</div>
+        </div>
+
+        <div class="focus-stat">
+            <div class="focus-stat-top">
+                <span class="focus-stat-label">Sessions</span>
+                <span class="focus-stat-icon"><i class="bi bi-check2-circle"></i></span>
+            </div>
+            <div class="focus-stat-value" id="todaySessions">{{ today_sessions }}</div>
+            <div class="focus-stat-note">Completed today</div>
+        </div>
+
+        <div class="focus-stat">
+            <div class="focus-stat-top">
+                <span class="focus-stat-label">Weekly Focus</span>
+                <span class="focus-stat-icon"><i class="bi bi-calendar-week"></i></span>
+            </div>
+            <div class="focus-stat-value">
+                <span id="weeklyMinutes">{{ weekly_minutes }}</span>
+                <small>min</small>
+            </div>
+            <div class="focus-stat-note">Last 7 days</div>
+        </div>
+
+        <div class="focus-stat">
+            <div class="focus-stat-top">
+                <span class="focus-stat-label">Focus Streak</span>
+                <span class="focus-stat-icon"><i class="bi bi-fire"></i></span>
+            </div>
+            <div class="focus-stat-value">
+                {{ streak }} <small>days</small>
+            </div>
+            <div class="focus-stat-note">Consecutive active days</div>
+        </div>
+
+    </div>
+
+
+    <!-- MAIN CONTENT -->
+
+    <div class="row g-3">
+
+        <!-- LEFT: TIMER -->
+
+        <div class="col-lg-7">
+
+            <div class="focus-card timer-card">
+
+                <div class="timer-card-header">
+                    <div>
+                        <h5 class="focus-section-title">Focus Timer</h5>
+                        <div class="focus-subtitle">Choose your duration and get started</div>
+                    </div>
+
+                    <span class="timer-status" id="timerStatus">Ready</span>
+                </div>
+
+
+                <!-- MODES -->
+
+                <div class="timer-modes">
+                    <button type="button"
+                            class="mode-btn active"
+                            id="focusModeBtn"
+                            onclick="changeMode('focus')">
+                        <i class="bi bi-book me-1"></i> Focus
+                    </button>
+
+                    <button type="button"
+                            class="mode-btn"
+                            id="breakModeBtn"
+                            onclick="changeMode('break')">
+                        <i class="bi bi-cup-hot me-1"></i> Break
+                    </button>
+                </div>
+
+
+                <!-- TIMER -->
+
+                <div class="timer-circle" id="timerCircle">
+                    <div class="timer-inner">
+                        <span class="timer-mode-label" id="modeLabel">FOCUS SESSION</span>
+                        <div class="timer-time" id="timer">25:00</div>
+                        <span class="timer-caption" id="timerCaption">One task at a time</span>
+                    </div>
+                </div>
+
+
+                <!-- PRESETS -->
+
+                <div class="focus-subtitle">QUICK DURATION</div>
+
+                <div class="timer-presets">
+                    <button type="button" class="preset-btn" data-minutes="15" onclick="setTimer(15,'focus')">15 min</button>
+                    <button type="button" class="preset-btn active" data-minutes="25" onclick="setTimer(25,'focus')">25 min</button>
+                    <button type="button" class="preset-btn" data-minutes="45" onclick="setTimer(45,'focus')">45 min</button>
+                    <button type="button" class="preset-btn" data-minutes="50" onclick="setTimer(50,'focus')">50 min</button>
+                    <button type="button" class="preset-btn" data-minutes="5" onclick="setTimer(5,'break')">5 min break</button>
+                </div>
+
+
+                <!-- CUSTOM DURATION -->
+
+                <div class="custom-timer-row">
+                    <div>
+                        <label class="focus-label" for="customMinutes">Custom duration (minutes)</label>
+                        <input type="number"
+                               id="customMinutes"
+                               class="focus-input"
+                               min="1"
+                               max="240"
+                               value="30">
+                    </div>
+
+                    <button type="button"
+                            class="btn btn-outline-primary btn-sm"
+                            onclick="applyCustomTimer()">
+                        Apply
+                    </button>
+                </div>
+
+
+                <!-- SUBJECT -->
+
+                <div class="subject-box">
+                    <label class="focus-label" for="subject">
+                        <i class="bi bi-journal-text text-primary me-1"></i>
+                        What are you studying?
+                    </label>
+
+                    <input type="text"
+                           id="subject"
+                           class="focus-input"
+                           maxlength="100"
+                           value="General Study"
+                           placeholder="e.g. Python, DBMS, Machine Learning">
+                </div>
+
+
+                <!-- CONTROLS -->
+
+                <div class="timer-controls">
+
+                    <button type="button"
+                            id="startBtn"
+                            class="btn btn-primary"
+                            onclick="toggleTimer()">
+                        <i class="bi bi-play-fill"></i> Start
+                    </button>
+
+                    <button type="button"
+                            class="btn btn-outline-secondary"
+                            onclick="resetTimer()">
+                        <i class="bi bi-arrow-counterclockwise"></i> Reset
+                    </button>
+
+                    <button type="button"
+                            class="btn btn-outline-danger"
+                            onclick="skipTimer()">
+                        <i class="bi bi-skip-forward"></i> Skip
+                    </button>
+
+                </div>
+
+                <p class="timer-message" id="timerMsg" aria-live="polite">
+                    Completed focus sessions are automatically saved.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- RIGHT: GOAL + TIPS -->
+
+        <div class="col-lg-5">
+
+            <!-- DAILY GOAL -->
+
+            <div class="focus-card goal-card mb-3">
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                        <h5 class="focus-section-title">Daily Study Goal</h5>
+                        <div class="focus-subtitle">Your personal daily target</div>
+                    </div>
+
+                    <span class="focus-section-icon">
+                        <i class="bi bi-bullseye"></i>
+                    </span>
+                </div>
+
+
+                <label class="focus-label" for="dailyGoal">Daily target in minutes</label>
+
+                <div class="input-group input-group-sm mb-3">
+                    <input type="number"
+                           id="dailyGoal"
+                           class="form-control focus-input"
+                           min="1"
+                           max="1440"
+                           value="{{ daily_goal }}">
+
+                    <span class="input-group-text">Minutes</span>
+
+                    <button type="button"
+                            class="btn btn-primary"
+                            id="saveGoalBtn"
+                            onclick="saveGoal()">
+                        Save
+                    </button>
+                </div>
+
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <span class="focus-subtitle">Today's achievement</span>
+                    <span class="goal-number" id="progressPercent">0%</span>
+                </div>
+
+                <div class="goal-progress mt-2">
+                    <div class="goal-progress-fill" id="progressFill"></div>
+                </div>
+
+                <div class="goal-meta">
+                    <span id="progressText"></span>
+                    <span id="goalRemaining"></span>
+                </div>
+
+                <div id="goalMessage" class="small" aria-live="polite"></div>
+
+            </div>
+
+
+            <!-- FOCUS TIPS -->
+
+            <div class="focus-card">
+
+                <div class="d-flex align-items-center gap-2 mb-2">
+                    <span class="focus-section-icon">
+                        <i class="bi bi-lightbulb"></i>
+                    </span>
+
+                    <div>
+                        <h5 class="focus-section-title">Focus Better</h5>
+                        <div class="focus-subtitle">Small habits, better results</div>
+                    </div>
+                </div>
+
+
+                <div class="tip-item">
+                    <span class="tip-icon"><i class="bi bi-phone"></i></span>
+                    <div>
+                        <strong>Remove distractions</strong>
+                        <p>Keep your phone away and silence unnecessary notifications.</p>
+                    </div>
+                </div>
+
+                <div class="tip-item">
+                    <span class="tip-icon"><i class="bi bi-list-check"></i></span>
+                    <div>
+                        <strong>Set one clear objective</strong>
+                        <p>Decide what you want to complete before starting.</p>
+                    </div>
+                </div>
+
+                <div class="tip-item">
+                    <span class="tip-icon"><i class="bi bi-cup-hot"></i></span>
+                    <div>
+                        <strong>Take regular breaks</strong>
+                        <p>Give your mind time to relax between sessions.</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ANALYTICS -->
+
+    <div class="row g-3 mt-1">
+
+        <!-- WEEKLY ACTIVITY -->
+
+        <div class="col-lg-7">
+
+            <div class="focus-card">
+
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                        <h5 class="focus-section-title">Weekly Focus Activity</h5>
+                        <div class="focus-subtitle">Your study time over the last 7 days</div>
+                    </div>
+
+                    <span class="focus-section-icon">
+                        <i class="bi bi-bar-chart-line"></i>
+                    </span>
+                </div>
+
+
+                {% set weekly_max = [weekly_data|map(attribute='minutes')|max, 1]|max %}
+
+                <div class="week-bars">
+
+                    {% for day in weekly_data %}
+
+                    <div class="week-day">
+
+                        <div class="week-bar-track"
+                             title="{{ day.date }}: {{ day.minutes }} minutes">
+
+                            <div class="week-bar"
+                                 style="height: {{ (day.minutes / weekly_max * 100)|round(1) }}%">
+                            </div>
+
+                        </div>
+
+                        <span class="week-day-label">{{ day.day }}</span>
+
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+
+                <div class="d-flex justify-content-between align-items-center mt-3">
+                    <span class="focus-subtitle">Total focus this week</span>
+                    <strong class="text-primary small">{{ weekly_minutes }} minutes</strong>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- SUBJECT BREAKDOWN -->
+
+        <div class="col-lg-5">
+
+            <div class="focus-card">
+
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <div>
+                        <h5 class="focus-section-title">Subject Breakdown</h5>
+                        <div class="focus-subtitle">Time spent on each subject</div>
+                    </div>
+
+                    <span class="focus-section-icon">
+                        <i class="bi bi-journal-bookmark"></i>
+                    </span>
+                </div>
+
+
+                {% if subject_data %}
+
+                    {% set max_subject_minutes = [subject_data|map(attribute='minutes')|max, 1]|max %}
+
+                    {% for item in subject_data %}
+
+                    <div class="subject-row">
+
+                        <div class="subject-meta">
+                            <span class="subject-name">{{ item.subject }}</span>
+                            <span class="subject-minutes">{{ item.minutes }} min</span>
+                        </div>
+
+                        <div class="subject-track">
+                            <div class="subject-fill"
+                                 style="width: {{ (item.minutes / max_subject_minutes * 100)|round(1) }}%">
+                            </div>
+                        </div>
+
+                    </div>
+
+                    {% endfor %}
+
+                {% else %}
+
+                    <div class="focus-empty">
+                        <i class="bi bi-journal-x"></i>
+                        No subject-wise sessions recorded yet.
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="focus-footer">
+        <i class="bi bi-info-circle me-1"></i>
+        Only completed focus sessions are counted. Paused, skipped and break sessions are excluded.
+    </div>
+
+</div>
+
+{% endblock %}
+
+
+{% block scripts %}
+
+<script>
+/* =========================================
+   FOCUS TIMER LOGIC
+========================================= */
+
+let total = 25 * 60;
+let left = total;
+let tick = null;
+
+let mode = 'focus';
+let running = false;
+let saving = false;
+let completed = false;
+
+let todayMinutes = Number({{ today_minutes|int|tojson }});
+let todaySessions = Number({{ today_sessions|int|tojson }});
+let dailyGoal = Number({{ daily_goal|int|tojson }});
+
+const timerElement = document.getElementById('timer');
+const timerCircle = document.getElementById('timerCircle');
+const startBtn = document.getElementById('startBtn');
+const timerMsg = document.getElementById('timerMsg');
+const timerStatus = document.getElementById('timerStatus');
+
+
+/* TIMER DISPLAY */
+
+function drawTimer() {
+
+    const minutes = Math.floor(left / 60);
+    const seconds = left % 60;
+
+    timerElement.textContent =
+        String(minutes).padStart(2, '0') + ':' +
+        String(seconds).padStart(2, '0');
+
+    const progress = total > 0
+        ? ((total - left) / total) * 360
+        : 0;
+
+    const color = mode === 'focus' ? '#1769aa' : '#16a085';
+
+    timerCircle.style.background =
+        `conic-gradient(${color} ${progress}deg, #edf2f7 ${progress}deg)`;
+
+}
+
+
+/* STATUS */
+
+function setStatus(text, type = '') {
+
+    timerStatus.textContent = text;
+    timerStatus.className = 'timer-status';
+
+    if (type) {
+        timerStatus.classList.add(type);
+    }
+
+}
+
+
+/* BUTTON STATE */
+
+function updateButton() {
+
+    if (saving) {
+        startBtn.disabled = true;
+        startBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Saving';
+        return;
+    }
+
+    if (completed || left <= 0) {
+        startBtn.disabled = true;
+        startBtn.innerHTML = '<i class="bi bi-check-circle-fill"></i> Completed';
+        return;
+    }
+
+    startBtn.disabled = false;
+
+    if (running) {
+        startBtn.innerHTML = '<i class="bi bi-pause-fill"></i> Pause';
+    } else {
+        startBtn.innerHTML =
+            '<i class="bi bi-play-fill"></i> ' +
+            (left < total ? 'Resume' : 'Start');
+    }
+
+}
+
+
+/* DAILY GOAL */
+
+function updateGoalProgress() {
+
+    const percent = Math.min(
+        100,
+        Math.round((todayMinutes / dailyGoal) * 100)
+    );
+
+    const remaining = Math.max(0, dailyGoal - todayMinutes);
+
+    document.getElementById('todayMinutes').textContent = todayMinutes;
+    document.getElementById('todaySessions').textContent = todaySessions;
+
+    document.getElementById('progressPercent').textContent =
+        percent + '%';
+
+    document.getElementById('progressFill').style.width =
+        percent + '%';
+
+    document.getElementById('progressText').textContent =
+        todayMinutes + ' / ' + dailyGoal + ' min';
+
+    document.getElementById('goalRemaining').textContent =
+        remaining === 0 ? 'Goal achieved!' : remaining + ' min left';
+
+}
+
+
+/* MODE CHANGE */
+
+function changeMode(newMode) {
+
+    if (running || saving) return;
+
+    mode = newMode;
+
+    setTimer(mode === 'focus' ? 25 : 5, mode);
+
+}
+
+
+/* SET TIMER */
+
+function setTimer(minutes, newMode = mode) {
+
+    if (running || saving) return;
+
+    clearInterval(tick);
+    tick = null;
+
+    mode = newMode;
+    total = minutes * 60;
+    left = total;
+
+    completed = false;
+
+    document.getElementById('modeLabel').textContent =
+        mode === 'focus' ? 'FOCUS SESSION' : 'BREAK SESSION';
+
+    document.getElementById('timerCaption').textContent =
+        mode === 'focus' ? 'One task at a time' : 'Relax and recharge';
+
+    document.getElementById('focusModeBtn')
+        .classList.toggle('active', mode === 'focus');
+
+    document.getElementById('breakModeBtn')
+        .classList.toggle('active', mode === 'break');
+
+    document.querySelectorAll('.preset-btn').forEach(btn => {
+        btn.classList.toggle(
+            'active',
+            Number(btn.dataset.minutes) === minutes &&
+            (
+                (minutes === 5 && mode === 'break') ||
+                (minutes !== 5 && mode === 'focus')
+            )
+        );
+    });
+
+    setStatus('Ready');
+
+    updateButton();
+    drawTimer();
+
+    timerMsg.textContent = 'Timer ready. Start when you are prepared.';
+
+}
+
+
+/* CUSTOM TIMER */
+
+function applyCustomTimer() {
+
+    const minutes = Number(
+        document.getElementById('customMinutes').value
+    );
+
+    if (!Number.isInteger(minutes) || minutes < 1 || minutes > 240) {
+        alert('Please enter a duration between 1 and 240 minutes.');
+        return;
+    }
+
+    setTimer(minutes, 'focus');
+
+}
+
+
+/* START / PAUSE / RESUME */
+
+function toggleTimer() {
+
+    if (saving || completed || left <= 0) return;
+
+    if (running) {
+
+        clearInterval(tick);
+        tick = null;
+
+        running = false;
+
+        setStatus('Paused', 'paused');
+
+        timerMsg.textContent =
+            'Timer paused. Resume whenever you are ready.';
+
+        updateButton();
+        return;
+
+    }
+
+    running = true;
+
+    setStatus('Running', 'running');
+
+    timerMsg.textContent =
+        mode === 'focus'
+            ? 'Stay focused. Your session is in progress.'
+            : 'Enjoy your break.';
+
+    updateButton();
+
+    tick = setInterval(() => {
+
+        left--;
+
+        drawTimer();
+
+        if (left <= 0) {
+
+            clearInterval(tick);
+            tick = null;
+
+            running = false;
+            completed = true;
+
+            completeSession();
+
+        }
+
+    }, 1000);
+
+}
+
+
+/* SESSION COMPLETION */
+
+async function completeSession() {
+
+    if (mode === 'break') {
+
+        setStatus('Break Complete', 'completed');
+
+        timerMsg.textContent =
+            'Your break is complete. Start another focus session when ready.';
+
+        updateButton();
+        return;
+
+    }
+
+    saving = true;
+    updateButton();
+
+    setStatus('Saving');
+
+    const minutes = Math.round(total / 60);
+
+    const subject =
+        document.getElementById('subject').value.trim() ||
+        'General Study';
+
+    try {
+
+        const response = await fetch('/focus/save', {
+
+            method: 'POST',
+
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+            body: JSON.stringify({
+                minutes: minutes,
+                subject: subject
+            })
+
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || !data.ok) {
+            throw new Error(data.error || 'Could not save the session.');
+        }
+
+        todayMinutes += minutes;
+        todaySessions += 1;
+
+        updateGoalProgress();
+
+        setStatus('Completed', 'completed');
+
+        timerMsg.textContent =
+            'Great work! Your ' + minutes +
+            '-minute ' + subject + ' session has been saved.';
+
+        if (todayMinutes >= dailyGoal) {
+            timerMsg.textContent += ' Daily goal achieved!';
+        }
+
+    } catch (error) {
+
+        setStatus('Save Failed');
+
+        timerMsg.textContent =
+            'Timer completed, but saving failed: ' +
+            error.message +
+            '. Please refresh the page after checking your connection.';
+
+    } finally {
+
+        saving = false;
+        updateButton();
+
+    }
+
+}
+
+
+/* RESET */
+
+function resetTimer() {
+
+    if (saving) return;
+
+    clearInterval(tick);
+    tick = null;
+
+    running = false;
+    completed = false;
+
+    left = total;
+
+    setStatus('Ready');
+
+    updateButton();
+    drawTimer();
+
+    timerMsg.textContent =
+        'Timer reset. Previously saved sessions are unchanged.';
+
+}
+
+
+/* SKIP */
+
+function skipTimer() {
+
+    if (saving) return;
+
+    clearInterval(tick);
+    tick = null;
+
+    running = false;
+    completed = false;
+
+    left = total;
+
+    setStatus('Skipped');
+
+    updateButton();
+    drawTimer();
+
+    timerMsg.textContent =
+        'Session skipped. No focus time was saved.';
+
+}
+
+
+/* SAVE DAILY GOAL */
+
+async function saveGoal() {
+
+    if (saving) return;
+
+    const goalInput = document.getElementById('dailyGoal');
+    const saveButton = document.getElementById('saveGoalBtn');
+
+    const goal = Number(goalInput.value);
+
+    if (!Number.isInteger(goal) || goal < 1 || goal > 1440) {
+
+        alert('Enter a daily goal between 1 and 1440 minutes.');
+        return;
+
+    }
+
+    saveButton.disabled = true;
+    saveButton.textContent = 'Saving';
+
+    try {
+
+        const response = await fetch('/focus/goal', {
+
+            method: 'POST',
+
+            headers: {
+                'Content-Type': 'application/json'
+            },
+
+            body: JSON.stringify({
+                daily_goal: goal
+            })
+
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || !data.ok) {
+            throw new Error(data.error || 'Unable to save goal.');
+        }
+
+        dailyGoal = Number(data.daily_goal);
+
+        updateGoalProgress();
+
+        document.getElementById('goalMessage').textContent =
+            'Daily goal updated successfully.';
+
+        document.getElementById('goalMessage').className =
+            'small text-success mt-2';
+
+    } catch (error) {
+
+        document.getElementById('goalMessage').textContent =
+            error.message;
+
+        document.getElementById('goalMessage').className =
+            'small text-danger mt-2';
+
+    } finally {
+
+        saveButton.disabled = false;
+        saveButton.textContent = 'Save';
+
+    }
+
+}
+
+
+/* INITIALIZE */
+
+updateGoalProgress();
+drawTimer();
+updateButton();
+
+</script>
+
+{% endblock %}

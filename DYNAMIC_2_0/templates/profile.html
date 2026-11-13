@@ -1,0 +1,201 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="page-head profile-page-head">
+    <div>
+        <span class="eyebrow">ACCOUNT & SECURITY</span>
+        <h1>My Profile</h1>
+        <p>Manage your account and keep track of your workspace activity.</p>
+    </div>
+    <div class="profile-status">
+        <span class="status-dot"></span>
+        Active Account
+    </div>
+</div>
+
+<div class="row g-4">
+
+    <!-- LEFT PROFILE SECTION -->
+    <div class="col-lg-4">
+
+        <div class="panel profile-main-card">
+
+            <div class="profile-cover">
+                <div class="profile-avatar">
+                    {{ user[0][0]|upper }}
+                </div>
+            </div>
+
+            <div class="profile-identity">
+                <h3>{{ user[0] }}</h3>
+                <p>{{ user[1] }}</p>
+
+                <span class="account-badge">
+                    <i class="bi bi-patch-check-fill"></i>
+                    Registered Member
+                </span>
+            </div>
+
+            <div class="profile-divider"></div>
+
+            <div class="profile-detail">
+                <div class="detail-icon">
+                    <i class="bi bi-person"></i>
+                </div>
+                <div>
+                    <small>Full Name</small>
+                    <strong>{{ user[0] }}</strong>
+                </div>
+            </div>
+
+            <div class="profile-detail">
+                <div class="detail-icon">
+                    <i class="bi bi-envelope"></i>
+                </div>
+                <div>
+                    <small>Email Address</small>
+                    <strong>{{ user[1] }}</strong>
+                </div>
+            </div>
+
+            <div class="profile-detail">
+                <div class="detail-icon">
+                    <i class="bi bi-calendar-check"></i>
+                </div>
+                <div>
+                    <small>Member Since</small>
+                    <strong>
+                        {{ user[2].strftime('%d %B %Y') if user[2] else 'Not available' }}
+                    </strong>
+                </div>
+            </div>
+
+            <div class="profile-security-note">
+                <i class="bi bi-shield-lock-fill"></i>
+                <div>
+                    <strong>Your workspace is private</strong>
+                    <p>Your personal workspace data is associated with your authenticated account.</p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- RIGHT CONTENT -->
+    <div class="col-lg-8">
+
+        <!-- ACCOUNT OVERVIEW -->
+        <div class="panel profile-overview-panel mb-4">
+
+            <div class="section-heading">
+                <div>
+                    <h5>Account Overview</h5>
+                    <p>Your account information at a glance.</p>
+                </div>
+                <i class="bi bi-grid-1x2"></i>
+            </div>
+
+            <div class="row g-3">
+
+                <div class="col-md-6">
+                    <div class="overview-item">
+                        <i class="bi bi-journal-text"></i>
+                        <div>
+                            <strong>Personal Notes</strong>
+                            <small>Save and organize your learning material</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="overview-item">
+                        <i class="bi bi-check2-square"></i>
+                        <div>
+                            <strong>Task Management</strong>
+                            <small>Organize your daily activities</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="overview-item">
+                        <i class="bi bi-stopwatch"></i>
+                        <div>
+                            <strong>Focus Sessions</strong>
+                            <small>Track your study sessions</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="overview-item">
+                        <i class="bi bi-graph-up-arrow"></i>
+                        <div>
+                            <strong>Learning Analytics</strong>
+                            <small>Review your productivity progress</small>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- RECENT ACTIVITY -->
+        <div class="panel activity-panel">
+
+            <div class="section-heading">
+                <div>
+                    <h5>Recent Activity</h5>
+                    <p>Your latest actions across the workspace.</p>
+                </div>
+                <span class="activity-label">
+                    <i class="bi bi-clock-history"></i>
+                    Activity Log
+                </span>
+            </div>
+
+            <div class="activity-list">
+
+                {% for a in activity %}
+
+                <div class="activity-item">
+
+                    <div class="activity-icon">
+                        <i class="bi bi-activity"></i>
+                    </div>
+
+                    <div class="activity-content">
+                        <strong>{{ a[0] }}</strong>
+                        <p>{{ a[1] or 'No additional details available.' }}</p>
+                        <small>
+                            <i class="bi bi-clock"></i>
+                            {{ a[2].strftime('%d %b %Y, %I:%M %p') if a[2] else 'Time unavailable' }}
+                        </small>
+                    </div>
+
+                </div>
+
+                {% else %}
+
+                <div class="empty-activity">
+                    <div class="empty-activity-icon">
+                        <i class="bi bi-calendar2-check"></i>
+                    </div>
+                    <h6>No activity yet</h6>
+                    <p>Your recent workspace activities will appear here as you use DYNAMIC 2.0.</p>
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
